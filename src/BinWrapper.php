@@ -181,7 +181,7 @@ class BinWrapper
 
         if (!$isExecutable) {
             throw new \Exception(
-                'Couldn\'t execute the ' . $bin . ' binary. Make sure it has the right permissions.'
+                'Couldn\'t execute the `' . $bin . '` binary. Make sure it has the right permissions.'
             );
         }
 
