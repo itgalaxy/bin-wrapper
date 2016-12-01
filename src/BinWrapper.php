@@ -10,7 +10,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class BinWrapper
 {
     private $options = [
-        'strip' => 1,
         'skipCheck' => false,
         'guzzleClientOptions' => []
     ];
@@ -26,10 +25,6 @@ class BinWrapper
     public function __construct($options = [])
     {
         $this->options = array_merge($this->options, $options);
-
-        if ($this->options['strip'] <= 0) {
-            $this->options['strip'] = 0;
-        }
     }
 
     public function src($src = null, $os = null, $arch = null)
