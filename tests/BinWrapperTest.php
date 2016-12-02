@@ -224,6 +224,36 @@ class BinWrapperTest extends TestCase
         $binWrapper->run();
     }
 
+    public function testErrorIfRequestReturnNon200Code()
+    {
+        $this->expectException(\GuzzleHttp\Exception\ClientException::class);
+        // Create a mock and queue two responses.
+        $mock = new MockHandler(
+            [
+                new Response(
+                    404,
+                    []
+                ),
+            ]
+        );
+        $handler = HandlerStack::create($mock);
+
+        $tempDirectory = $this->getTempDirectory();
+
+        $binWrapper = new BinWrapper([
+            'skipCheck' => true,
+            'guzzleClientOptions' => [
+                'handler' => $handler
+            ]
+        ]);
+        $binWrapper
+            ->src('http://foo.com/gifsicle.tar.gz')
+            ->dest($tempDirectory)
+            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+
+        $binWrapper->run();
+    }
+
     private function getTempDirectory()
     {
         $tempDirectory = tempnam(sys_get_temp_dir(), 'bin-wrapper-');
