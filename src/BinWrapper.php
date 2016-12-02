@@ -6,6 +6,7 @@ use Mmoreram\Extractor\Extractor;
 use Mmoreram\Extractor\Filesystem\SpecificDirectory;
 use Mmoreram\Extractor\Resolver\ExtensionResolver;
 use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\PathUtil\Path;
 
 class BinWrapper
 {
@@ -77,10 +78,10 @@ class BinWrapper
 
     public function path()
     {
-        return implode('/', [
+        return Path::canonicalize(implode('/', [
             $this->dest(),
             $this->using()
-        ]);
+        ]));
     }
 
     public function download()
@@ -106,12 +107,10 @@ class BinWrapper
                     ]
                 );
 
-                $pathInfo = pathinfo($sink);
-
                 $fs->chmod($sink, 0755);
 
-                if (empty($pathInfo['extension']) || !in_array(
-                    strtolower($pathInfo['extension']),
+                if (!Path::hasExtension(
+                    $sink,
                     [
                         'rar',
                         'zip',
