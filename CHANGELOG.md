@@ -1,3 +1,7 @@
+# Head
+
+- Chore: improved `README.md`.
+
 # 0.0.3 - 2016-12-02
 
 - Fixed: compat with `windows`.

@@ -10,11 +10,37 @@ Binary wrapper that makes your programs seamlessly available as local dependenci
 
 ## Install
 
-Coming soon
+The utility can be installed with Composer:
+
+```shell
+$ composer require bin-wrapper
+```
 
 ## Usage
 
-Coming soon
+```php
+use BinWrapper\BinWrapper;
+
+$url = 'https://github.com/itgalaxy/pngquant-bin/raw/master/bin-vendor';
+$binWrapper = new BinWrapper();
+$binWrapper
+    ->src($url . '/freebsd/x64/pngquant', 'darwin', 'x64')
+    ->src($url . '/linux/x64/pngquant', 'linux', 'x64')
+    ->src($url . '/linux/x86/pngquant', 'linux', 'x86')
+    ->src($url . '/macos/pngquant', 'darwin')
+    ->src($url . '/win/pngquant.exe', 'windowsnt')
+    ->dest(__DIR__ . '/vendor-bin')
+    ->use(str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'pngquant.exe' : 'pngquant')
+    ->version('>=1.71');
+
+$binWrapper->build(['--version']); // You can use `try {} catch {}` for catching exceptions
+```
+
+Get the path to your binary with `$binWrapper->path()`:
+
+```php
+echo $binWrapper->path();
+```
 
 ## API
 
