@@ -36,7 +36,7 @@ class BinWrapper
 
         array_push($this->src, [
             'url' => $src,
-            'os' => strtolower($os),
+            'os' => str_replace(' ', '', strtolower($os)),
             'arch' => strtolower($arch)
         ]);
 
@@ -49,7 +49,8 @@ class BinWrapper
             return $this->dest;
         }
 
-        $this->dest = rtrim($dest, '/');
+        // Compat with windows
+        $this->dest = rtrim($dest, '/\\');
 
         return $this;
     }

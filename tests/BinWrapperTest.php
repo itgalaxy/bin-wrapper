@@ -23,7 +23,7 @@ class BinWrapperTest extends TestCase
         $binWrapper = new BinWrapper();
         $binWrapper->src('http://foo.com/bar.tar.gz', php_uname('s'));
 
-        $this->assertEquals(strtolower(php_uname('s')), $binWrapper->src()[0]['os']);
+        $this->assertEquals(str_replace(' ', '', strtolower(php_uname('s'))), $binWrapper->src()[0]['os']);
     }
 
     public function testSetDestinationDirectory()
@@ -68,7 +68,9 @@ class BinWrapperTest extends TestCase
                 new Response(
                     200,
                     [],
-                    file_get_contents(__DIR__ . '/fixtures/gifsicle-' . strtolower(php_uname('s')) . '.tar.gz')
+                    file_get_contents(
+                        __DIR__ . '/fixtures/gifsicle-' . str_replace(' ', '', strtolower(php_uname('s'))) . '.tar.gz'
+                    )
                 )
             ]
         );
@@ -84,7 +86,7 @@ class BinWrapperTest extends TestCase
         $binWrapper
             ->src('http://foo.com/gifsicle.tar.gz')
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using(str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'gifsicle.exe' : 'gifsicle');
 
         $binWrapper->run();
         $this->assertTrue(file_exists($binWrapper->path()));
@@ -101,7 +103,9 @@ class BinWrapperTest extends TestCase
                 new Response(
                     200,
                     [],
-                    file_get_contents(__DIR__ . '/fixtures/gifsicle-' . strtolower(php_uname('s')) . '.tar.gz')
+                    file_get_contents(
+                        __DIR__ . '/fixtures/gifsicle-' . str_replace(' ', '', strtolower(php_uname('s'))) . '.tar.gz'
+                    )
                 )
             ]
         );
@@ -117,7 +121,7 @@ class BinWrapperTest extends TestCase
         $binWrapper
             ->src('http://foo.com/gifsicle.tar.gz')
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle')
+            ->using(str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'gifsicle.exe' : 'gifsicle')
             ->version('>=1.71');
 
         $binWrapper->run();
@@ -140,7 +144,7 @@ class BinWrapperTest extends TestCase
                 new Response(
                     200,
                     [],
-                    file_get_contents(__DIR__ . '/fixtures/gifsicle-win32.tar.gz')
+                    file_get_contents(__DIR__ . '/fixtures/gifsicle-windowsnt.tar.gz')
                 ),
                 new Response(
                     200,
@@ -161,10 +165,10 @@ class BinWrapperTest extends TestCase
         ]);
         $binWrapper
             ->src('http://foo.com/gifsicle-darwin.tar.gz')
-            ->src('http://foo.com/gifsicle-win32.tar.gz')
+            ->src('http://foo.com/gifsicle-windowsnt.tar.gz')
             ->src('http://foo.com/test.php')
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using(str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'gifsicle.exe' : 'gifsicle');
 
         $binWrapper->run();
         $files = scandir($binWrapper->dest());
@@ -185,7 +189,9 @@ class BinWrapperTest extends TestCase
                 new Response(
                     200,
                     [],
-                    file_get_contents(__DIR__ . '/fixtures/gifsicle-' . strtolower(php_uname('s')) . '.tar.gz')
+                    file_get_contents(
+                        __DIR__ . '/fixtures/gifsicle-' . str_replace(' ', '', strtolower(php_uname('s'))) . '.tar.gz'
+                    )
                 ),
             ]
         );
@@ -202,7 +208,7 @@ class BinWrapperTest extends TestCase
         $binWrapper
             ->src('http://foo.com/gifsicle.tar.gz')
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using(str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'gifsicle.exe' : 'gifsicle');
 
         $binWrapper->run(['--shouldNotFailAnyway']);
         $this->assertTrue(file_exists($binWrapper->path()));
@@ -219,7 +225,7 @@ class BinWrapperTest extends TestCase
         $binWrapper = new BinWrapper();
         $binWrapper
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using(str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'gifsicle.exe' : 'gifsicle');
 
         $binWrapper->run();
     }
@@ -249,7 +255,7 @@ class BinWrapperTest extends TestCase
         $binWrapper
             ->src('http://foo.com/gifsicle.tar.gz')
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using(str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'gifsicle.exe' : 'gifsicle');
 
         $binWrapper->run();
     }

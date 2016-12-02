@@ -1,3 +1,7 @@
+# Head
+
+- Fixed: compat with `windows`.
+
 # 0.0.2 - 2016-12-02
 
 - Fixed: use `Path::canonicalize` for normalize bin path.
