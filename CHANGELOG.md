@@ -1,6 +1,8 @@
 # Head
 
 - Chore: improved `README.md`.
+- Chore: use `itgalaxy/os-filter` package instead own implementation.
+- Fixed: move `symfony/filesystem` package from `require-dev` to `require`.
 
 # 0.0.3 - 2016-12-02
 

@@ -87,7 +87,8 @@ class BinWrapper
 
     public function download()
     {
-        $files = $this->osFilterObj($this->src());
+        $osFilter = new \OsFilter\OsFilter();
+        $files = $osFilter->find($this->src());
 
         if (count($files) === 0) {
             throw new \Exception('No binary found matching your system. It\'s probably not supported.');
@@ -195,43 +196,5 @@ class BinWrapper
     private function binVersionCheck($bin, $semverRange, $opts = null)
     {
         // Need implemented
-    }
-
-    private function osFilterObj($arr)
-    {
-        $arch = null;
-        $platform = strtolower(php_uname('s'));
-
-        if (!empty(strstr(php_uname('m'), '64'))) {
-            $arch = 'x64';
-        } else {
-            $arch = 'x86';
-        }
-
-        if (!$arr || count($arr) == 0) {
-            return [];
-        }
-
-        return array_filter(
-            $arr,
-            function ($obj) use ($arch, $platform) {
-                if ($obj['os'] == $platform && $obj['arch'] == $arch) {
-                    unset($obj['os']);
-                    unset($obj['arch']);
-
-                    return $obj;
-                } elseif ($obj['os'] == $platform && !$obj['arch']) {
-                    unset($obj['os']);
-
-                    return $obj;
-                } elseif ($obj['arch'] == $arch && !$obj['os']) {
-                    unset($obj['arch']);
-
-                    return $obj;
-                } elseif (!$obj['os'] && !$obj['arch']) {
-                    return $obj;
-                }
-            }
-        );
     }
 }
