@@ -1,4 +1,4 @@
-# Head
+# 0.0.4 - 2016-12-03
 
 - Chore: improved `README.md`.
 - Chore: use `itgalaxy/os-filter` package instead own implementation.
