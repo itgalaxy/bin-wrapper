@@ -12,7 +12,7 @@ environment:
 
 cache:
     - '%APPDATA%\Composer'
-    - c:\tools\php -> appveyor.yml
+    - C:\tools\php -> appveyor.yml
 
 init:
     - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%

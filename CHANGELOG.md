@@ -2,6 +2,9 @@
 
 - Chore: loaded `autoload` in tests relatively `bootstrap.php` file.
 - Chore: fixed test for `windows`.
+- Chore: minimum required `phpunit/phpunit` version is now `~5.7.0`.
+- Chore: use `itgalaxy/bin-check` package instead own implementation.
+- Chore: use `PHP_OS` constant instead `php-uname` function.
 
 # 0.0.4 - 2016-12-03
 

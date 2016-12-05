@@ -1,6 +1,7 @@
 <?php
 namespace BinWrapper;
 
+use BinCheck\BinCheck;
 use GuzzleHttp\Client;
 use Mmoreram\Extractor\Extractor;
 use Mmoreram\Extractor\Filesystem\SpecificDirectory;
@@ -36,7 +37,7 @@ class BinWrapper
 
         array_push($this->src, [
             'url' => $src,
-            'os' => str_replace(' ', '', strtolower($os)),
+            'os' => strtolower($os),
             'arch' => strtolower($arch)
         ]);
 
@@ -154,7 +155,7 @@ class BinWrapper
 
     public function runCheck($cmd)
     {
-        $this->binCheck($this->path(), $cmd);
+        BinCheck::check($this->path(), $cmd);
 
         // if ($this->version()) {
         // $this->binVersionCheck($this->path(), $this->version());
@@ -174,23 +175,6 @@ class BinWrapper
         }
 
         $this->runCheck($cmd);
-    }
-
-    private function binCheck($bin, $args = ['--help'])
-    {
-        $isExecutable = is_executable($bin);
-
-        if (!$isExecutable) {
-            throw new \Exception(
-                'Couldn\'t execute the `' . $bin . '` binary. Make sure it has the right permissions.'
-            );
-        }
-
-        exec($bin . ' ' . implode(' ', $args), $output, $returnVar);
-
-        if ($returnVar !== 0) {
-            throw new \Exception('The `' . $this->path() . '` binary doesn\'t seem to work correctly');
-        }
     }
 
     private function binVersionCheck($bin, $semverRange, $opts = null)
