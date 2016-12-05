@@ -1,3 +1,7 @@
+# Head
+
+- Chore: used not interactive mode for `composer install` in `CI`.
+
 # 0.0.6 - 2016-12-05
 
 - Added: used `itgalaxy/bin-version-check` package for semver range validation.

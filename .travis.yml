@@ -15,7 +15,7 @@ cache:
 
 before_script:
   - composer selfupdate
-  - composer install
+  - composer install --no-progress --profile --prefer-dist --no-interaction
 
 script:
   - composer test
