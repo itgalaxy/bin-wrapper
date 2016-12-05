@@ -1,4 +1,4 @@
-# Head
+# 0.0.6 - 2016-12-05
 
 - Added: used `itgalaxy/bin-version-check` package for semver range validation.
 
