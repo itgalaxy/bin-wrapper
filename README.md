@@ -48,7 +48,7 @@ Coming soon
 
 ## Related
 
-- [bin-wrapper](https://github.com/kevva/bin-wrapper) - Thank you for inspiration.
+- [bin-wrapper](https://github.com/kevva/bin-wrapper) - Thanks you for inspiration.
 
 ## Contribution
 

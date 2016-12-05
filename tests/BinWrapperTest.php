@@ -208,7 +208,11 @@ class BinWrapperTest extends TestCase
         $binWrapper
             ->src('http://foo.com/gifsicle.tar.gz')
             ->dest($tempDirectory)
-            ->using(str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using(str_replace(
+                ' ',
+                '',
+                str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'gifsicle.exe' : 'gifsicle'
+            ));
 
         $binWrapper->run(['--shouldNotFailAnyway']);
         $this->assertTrue(file_exists($binWrapper->path()));

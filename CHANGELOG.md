@@ -1,6 +1,7 @@
 # Head
 
 - Chore: loaded `autoload` in tests relatively `bootstrap.php` file.
+- Chore: fixed test for `windows`.
 
 # 0.0.4 - 2016-12-03
 
