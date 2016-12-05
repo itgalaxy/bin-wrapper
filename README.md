@@ -22,6 +22,7 @@ $ composer require bin-wrapper
 use BinWrapper\BinWrapper;
 
 $url = 'https://github.com/itgalaxy/pngquant-bin/raw/master/bin-vendor';
+$platform = strtolower(PHP_OS);
 $binWrapper = new BinWrapper();
 $binWrapper
     ->src($url . '/freebsd/x64/pngquant', 'darwin', 'x64')
@@ -30,7 +31,7 @@ $binWrapper
     ->src($url . '/macos/pngquant', 'darwin')
     ->src($url . '/win/pngquant.exe', 'windowsnt')
     ->dest(__DIR__ . '/vendor-bin')
-    ->use(str_replace(' ', '', strtolower(php_uname('s'))) === 'windowsnt' ? 'pngquant.exe' : 'pngquant')
+    ->use($platform === 'winnt' ? 'pngquant.exe' : 'pngquant')
     ->version('>=1.71');
 
 $binWrapper->build(['--version']); // You can use `try {} catch {}` for catching exceptions
