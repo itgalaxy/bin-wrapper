@@ -41,6 +41,7 @@
             "tests",
             "*phpunit.xml*",
             ".travis.yml",
+            "appveyor.yml",
             "composer.phar"
         ]
     }
