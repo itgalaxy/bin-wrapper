@@ -2,6 +2,7 @@
 namespace BinWrapper;
 
 use BinCheck\BinCheck;
+use BinVersionCheck\BinVersionCheck;
 use GuzzleHttp\Client;
 use Mmoreram\Extractor\Extractor;
 use Mmoreram\Extractor\Filesystem\SpecificDirectory;
@@ -157,9 +158,9 @@ class BinWrapper
     {
         BinCheck::check($this->path(), $cmd);
 
-        // if ($this->version()) {
-        // $this->binVersionCheck($this->path(), $this->version());
-        // }
+        if ($this->version()) {
+            BinVersionCheck::check($this->path(), $this->version());
+        }
     }
 
     public function run($cmd = null)
@@ -175,10 +176,5 @@ class BinWrapper
         }
 
         $this->runCheck($cmd);
-    }
-
-    private function binVersionCheck($bin, $semverRange, $opts = null)
-    {
-        // Need implemented
     }
 }

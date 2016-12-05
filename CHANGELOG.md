@@ -1,3 +1,7 @@
+# Head
+
+- Added: used `itgalaxy/bin-version-check` package for semver range validation.
+
 # 0.0.5 - 2016-12-05
 
 - Chore: loaded `autoload` in tests relatively `bootstrap.php` file.
