@@ -1,6 +1,7 @@
 # Head
 
 - Chore: used not interactive mode for `composer install` in `CI`.
+- Chore: changed `getTempDirectory` function to `getTempDir` in `tests`.
 
 # 0.0.6 - 2016-12-05
 

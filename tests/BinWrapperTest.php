@@ -78,7 +78,7 @@ class BinWrapperTest extends TestCase
         );
         $handler = HandlerStack::create($mock);
 
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper([
             'guzzleClientOptions' => [
@@ -114,7 +114,7 @@ class BinWrapperTest extends TestCase
         );
         $handler = HandlerStack::create($mock);
 
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper([
             'guzzleClientOptions' => [
@@ -159,7 +159,7 @@ class BinWrapperTest extends TestCase
         );
         $handler = HandlerStack::create($mock);
 
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper([
             'skipCheck' => true,
@@ -202,7 +202,7 @@ class BinWrapperTest extends TestCase
         );
         $handler = HandlerStack::create($mock);
 
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper([
             'skipCheck' => true,
@@ -230,7 +230,7 @@ class BinWrapperTest extends TestCase
         $this->expectExceptionMessage('No binary found matching your system. It\'s probably not supported.');
 
         $platform = strtolower(PHP_OS);
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper();
         $binWrapper
@@ -257,7 +257,7 @@ class BinWrapperTest extends TestCase
         );
         $handler = HandlerStack::create($mock);
 
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper([
             'skipCheck' => true,
@@ -273,7 +273,7 @@ class BinWrapperTest extends TestCase
         $binWrapper->run();
     }
 
-    private function getTempDirectory()
+    private function getTempDir()
     {
         $tempDirectory = tempnam(sys_get_temp_dir(), 'bin-wrapper-');
         unlink($tempDirectory);
