@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+# Head
+
+- Fixed: avoid creating file when `guzzle` could not download file.
+
 # 1.0.2 - 2017-03-28
 
 - Fixed: canonicalize all paths.

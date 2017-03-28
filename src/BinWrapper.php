@@ -141,22 +141,26 @@ class BinWrapper
             throw new \Exception('No binary found matching your system. It\'s probably not supported.');
         }
 
-        $client = new Client($this->options['guzzleClientOptions']);
-        $fs = $this->fs;
-
         array_walk(
             $files,
-            function ($file) use ($client, $fs) {
+            function ($file) {
                 $sink = Path::join([$this->dest(),  basename($file['url'])]);
-                $client->request(
-                    'GET',
-                    $file['url'],
-                    [
-                        'sink' => $sink
-                    ]
-                );
+                $client = new Client($this->options['guzzleClientOptions']);
 
-                $fs->chmod($sink, 0755);
+                try {
+                    $client->request(
+                        'GET',
+                        $file['url'],
+                        [
+                            'sink' => $sink
+                        ]
+                    );
+                } catch (\Exception $exception) {
+                    $this->fs->remove($sink);
+                    throw $exception;
+                }
+
+                $this->fs->chmod($sink, 0755);
 
                 if (!Path::hasExtension(
                     $sink,
@@ -184,7 +188,7 @@ class BinWrapper
                 unlink($sink);
 
                 foreach ($files as $file) {
-                    $fs->chmod($file->getRealpath(), 0755);
+                    $this->fs->chmod($file->getRealpath(), 0755);
                 }
             }
         );
