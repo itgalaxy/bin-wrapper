@@ -84,10 +84,7 @@ class BinWrapper
 
     public function path()
     {
-        return Path::canonicalize(implode('/', [
-            $this->dest(),
-            $this->using()
-        ]));
+        return Path::join([$this->dest(), $this->using()]);
     }
 
     public function run($cmd = null)
@@ -150,7 +147,7 @@ class BinWrapper
         array_walk(
             $files,
             function ($file) use ($client, $fs) {
-                $sink = $this->dest() . '/' . basename($file['url']);
+                $sink = Path::join([$this->dest(),  basename($file['url'])]);
                 $client->request(
                     'GET',
                     $file['url'],

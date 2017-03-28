@@ -1,3 +1,7 @@
+# Head
+
+- Fixed: canonicalize all paths.
+
 # 1.0.1 - 2017-03-28
 
 - Fixed: ignore directory exist when search binary.
