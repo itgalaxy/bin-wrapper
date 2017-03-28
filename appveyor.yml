@@ -14,7 +14,7 @@ environment:
           php_ver_target: 7.1
 
 cache:
-    - '%LOCALAPPDATA%\Composer\files -> composer.lock'
+    - '%LOCALAPPDATA%\Composer\files -> composer.json'
     - composer.phar
     - c:\ProgramData\chocolatey\bin -> .appveyor.yml
     - c:\ProgramData\chocolatey\lib -> .appveyor.yml
