@@ -1,5 +1,6 @@
-# Head
+# 1.0.0 - 2017-03-28
 
+- Changed: used full php namespace.
 - Chore: used not interactive mode for `composer install` in `CI`.
 - Chore: changed `getTempDirectory` function to `getTempDir` in `tests`.
 
