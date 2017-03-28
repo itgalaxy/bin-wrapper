@@ -17,7 +17,8 @@ $ composer require bin-wrapper
 ## Usage
 
 ```php
-use BinWrapper\BinWrapper;
+<?php
+use Itgalaxy\BinWrapper\BinWrapper;
 
 $url = 'https://github.com/itgalaxy/pngquant-bin/raw/master/bin-vendor';
 $platform = strtolower(PHP_OS);
@@ -29,15 +30,16 @@ $binWrapper
     ->src($url . '/macos/pngquant', 'darwin')
     ->src($url . '/win/pngquant.exe', 'windowsnt')
     ->dest(__DIR__ . '/vendor-bin')
-    ->use($platform === 'winnt' ? 'pngquant.exe' : 'pngquant')
+    ->using(substr($platform, 0, 3) === 'win' ? 'pngquant.exe' : 'pngquant')
     ->version('>=1.71');
 
-$binWrapper->build(['--version']); // You can use `try {} catch {}` for catching exceptions
+$binWrapper->run(['--version']); // You can use `try {} catch {}` for catching exceptions
 ```
 
 Get the path to your binary with `$binWrapper->path()`:
 
 ```php
+<?php
 echo $binWrapper->path();
 ```
 
