@@ -632,7 +632,9 @@ class Filesystem
 
         if (!is_dir($dir)) {
             $this->mkdir($dir);
-        } elseif (!is_writable($dir)) {
+        }
+
+        if (!is_writable($dir)) {
             throw new IOException(sprintf('Unable to write to the "%s" directory.', $dir), 0, null, $dir);
         }
 
@@ -644,7 +646,8 @@ class Filesystem
             throw new IOException(sprintf('Failed to write file "%s".', $filename), 0, null, $filename);
         }
 
-        @chmod($tmpFile, 0666 & ~umask());
+        @chmod($tmpFile, file_exists($filename) ? fileperms($filename) : 0666 & ~umask());
+
         $this->rename($tmpFile, $filename, true);
     }
 
