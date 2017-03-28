@@ -20,10 +20,11 @@ class BinWrapperTest extends TestCase
 
     public function testAddASourceToASpecificOs()
     {
+        $platform = strtolower(PHP_OS);
         $binWrapper = new BinWrapper();
-        $binWrapper->src('http://foo.com/bar.tar.gz', php_uname('s'));
+        $binWrapper->src('http://foo.com/bar.tar.gz', $platform);
 
-        $this->assertEquals(strtolower(php_uname('s')), $binWrapper->src()[0]['os']);
+        $this->assertEquals($platform, $binWrapper->src()[0]['os']);
     }
 
     public function testSetDestinationDirectory()
@@ -60,6 +61,7 @@ class BinWrapperTest extends TestCase
 
     public function testVerifyThatABinaryIsWorking()
     {
+        $platform = strtolower(PHP_OS);
         $fs = new Filesystem();
 
         // Create a mock and queue two responses.
@@ -68,13 +70,15 @@ class BinWrapperTest extends TestCase
                 new Response(
                     200,
                     [],
-                    file_get_contents(__DIR__ . '/fixtures/gifsicle-' . strtolower(php_uname('s')) . '.tar.gz')
+                    file_get_contents(
+                        __DIR__ . '/fixtures/gifsicle-' . $platform . '.tar.gz'
+                    )
                 )
             ]
         );
         $handler = HandlerStack::create($mock);
 
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper([
             'guzzleClientOptions' => [
@@ -84,7 +88,7 @@ class BinWrapperTest extends TestCase
         $binWrapper
             ->src('http://foo.com/gifsicle.tar.gz')
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using($platform === 'winnt' ? 'gifsicle.exe' : 'gifsicle');
 
         $binWrapper->run();
         $this->assertTrue(file_exists($binWrapper->path()));
@@ -93,6 +97,7 @@ class BinWrapperTest extends TestCase
 
     public function testMeetTheDesiredVersion()
     {
+        $platform = strtolower(PHP_OS);
         $fs = new Filesystem();
 
         // Create a mock and queue two responses.
@@ -101,13 +106,15 @@ class BinWrapperTest extends TestCase
                 new Response(
                     200,
                     [],
-                    file_get_contents(__DIR__ . '/fixtures/gifsicle-' . strtolower(php_uname('s')) . '.tar.gz')
+                    file_get_contents(
+                        __DIR__ . '/fixtures/gifsicle-' . $platform . '.tar.gz'
+                    )
                 )
             ]
         );
         $handler = HandlerStack::create($mock);
 
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper([
             'guzzleClientOptions' => [
@@ -117,7 +124,7 @@ class BinWrapperTest extends TestCase
         $binWrapper
             ->src('http://foo.com/gifsicle.tar.gz')
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle')
+            ->using($platform === 'winnt' ? 'gifsicle.exe' : 'gifsicle')
             ->version('>=1.71');
 
         $binWrapper->run();
@@ -127,6 +134,7 @@ class BinWrapperTest extends TestCase
 
     public function testDownloadFilesEvenIfTheyAreNotUsed()
     {
+        $platform = strtolower(PHP_OS);
         $fs = new Filesystem();
 
         // Create a mock and queue two responses.
@@ -140,7 +148,7 @@ class BinWrapperTest extends TestCase
                 new Response(
                     200,
                     [],
-                    file_get_contents(__DIR__ . '/fixtures/gifsicle-win32.tar.gz')
+                    file_get_contents(__DIR__ . '/fixtures/gifsicle-winnt.tar.gz')
                 ),
                 new Response(
                     200,
@@ -151,7 +159,7 @@ class BinWrapperTest extends TestCase
         );
         $handler = HandlerStack::create($mock);
 
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper([
             'skipCheck' => true,
@@ -161,10 +169,10 @@ class BinWrapperTest extends TestCase
         ]);
         $binWrapper
             ->src('http://foo.com/gifsicle-darwin.tar.gz')
-            ->src('http://foo.com/gifsicle-win32.tar.gz')
+            ->src('http://foo.com/gifsicle-winnt.tar.gz')
             ->src('http://foo.com/test.php')
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using($platform === 'winnt' ? 'gifsicle.exe' : 'gifsicle');
 
         $binWrapper->run();
         $files = scandir($binWrapper->dest());
@@ -177,6 +185,7 @@ class BinWrapperTest extends TestCase
 
     public function testSkipRunningBinaryCheck()
     {
+        $platform = strtolower(PHP_OS);
         $fs = new Filesystem();
 
         // Create a mock and queue two responses.
@@ -185,13 +194,15 @@ class BinWrapperTest extends TestCase
                 new Response(
                     200,
                     [],
-                    file_get_contents(__DIR__ . '/fixtures/gifsicle-' . strtolower(php_uname('s')) . '.tar.gz')
+                    file_get_contents(
+                        __DIR__ . '/fixtures/gifsicle-' . $platform . '.tar.gz'
+                    )
                 ),
             ]
         );
         $handler = HandlerStack::create($mock);
 
-        $tempDirectory = $this->getTempDirectory();
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper([
             'skipCheck' => true,
@@ -202,7 +213,11 @@ class BinWrapperTest extends TestCase
         $binWrapper
             ->src('http://foo.com/gifsicle.tar.gz')
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using(str_replace(
+                ' ',
+                '',
+                $platform === 'winnt' ? 'gifsicle.exe' : 'gifsicle'
+            ));
 
         $binWrapper->run(['--shouldNotFailAnyway']);
         $this->assertTrue(file_exists($binWrapper->path()));
@@ -214,17 +229,51 @@ class BinWrapperTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No binary found matching your system. It\'s probably not supported.');
 
-        $tempDirectory = $this->getTempDirectory();
+        $platform = strtolower(PHP_OS);
+        $tempDirectory = $this->getTempDir();
 
         $binWrapper = new BinWrapper();
         $binWrapper
             ->dest($tempDirectory)
-            ->using(strtolower(php_uname('s')) === 'window nt' ? 'gifsicle.exe' : 'gifsicle');
+            ->using($platform === 'winnt' ? 'gifsicle.exe' : 'gifsicle');
 
         $binWrapper->run();
     }
 
-    private function getTempDirectory()
+    public function testErrorIfRequestReturnNon200Code()
+    {
+        $this->expectException(\GuzzleHttp\Exception\ClientException::class);
+
+        $platform = strtolower(PHP_OS);
+
+        // Create a mock and queue two responses.
+        $mock = new MockHandler(
+            [
+                new Response(
+                    404,
+                    []
+                ),
+            ]
+        );
+        $handler = HandlerStack::create($mock);
+
+        $tempDirectory = $this->getTempDir();
+
+        $binWrapper = new BinWrapper([
+            'skipCheck' => true,
+            'guzzleClientOptions' => [
+                'handler' => $handler
+            ]
+        ]);
+        $binWrapper
+            ->src('http://foo.com/gifsicle.tar.gz')
+            ->dest($tempDirectory)
+            ->using($platform === 'winnt' ? 'gifsicle.exe' : 'gifsicle');
+
+        $binWrapper->run();
+    }
+
+    private function getTempDir()
     {
         $tempDirectory = tempnam(sys_get_temp_dir(), 'bin-wrapper-');
         unlink($tempDirectory);

@@ -16,9 +16,6 @@
         <ini name="intl.default_locale" value="en"/>
         <ini name="intl.error_level" value="0"/>
         <ini name="memory_limit" value="-1"/>
-        <const name="WEB_SERVER_HOST" value="foo.com" />
-        <const name="WEB_SERVER_PORT" value="80" />
-        <const name="WEB_SERVER_DOCROOT" value="./tests/fixtures" />
     </php>
     <logging>
         <log type="coverage-text" target="php://stdout"/>
