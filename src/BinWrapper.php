@@ -12,11 +12,6 @@ use Webmozart\PathUtil\Path;
 
 class BinWrapper
 {
-    private $options = [
-        'skipCheck' => false,
-        'guzzleClientOptions' => []
-    ];
-
     private $src = [];
 
     private $dest = null;
@@ -25,9 +20,17 @@ class BinWrapper
 
     private $version = null;
 
+    private $options = [
+        'skipCheck' => false,
+        'guzzleClientOptions' => []
+    ];
+
+    private $fs = null;
+
     public function __construct($options = [])
     {
         $this->options = array_merge_recursive($this->options, $options);
+        $this->fs = new Filesystem();
     }
 
     public function src($src = null, $os = null, $arch = null)
@@ -123,7 +126,8 @@ class BinWrapper
 
     public function findExisting()
     {
-        $fileExist = file_exists($this->path());
+        $path = $this->path();
+        $fileExist = $this->fs->exists($path) && is_file($path);
 
         if (!$fileExist) {
             $this->download();
@@ -141,7 +145,7 @@ class BinWrapper
         }
 
         $client = new Client($this->options['guzzleClientOptions']);
-        $fs = new Filesystem();
+        $fs = $this->fs;
 
         array_walk(
             $files,

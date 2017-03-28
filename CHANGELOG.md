@@ -1,3 +1,7 @@
+# Head
+
+- Fixed: ignore directory exist when search binary.
+
 # 1.0.0 - 2017-03-28
 
 - Changed: used full php namespace.
