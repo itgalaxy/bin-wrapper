@@ -1,9 +1,9 @@
 <?php
-namespace BinWrapper;
+namespace Itgalaxy\BinWrapper;
 
-use BinCheck\BinCheck;
-use BinVersionCheck\BinVersionCheck;
 use GuzzleHttp\Client;
+use Itgalaxy\BinVersionCheck\BinVersionCheck;
+use Itgalaxy\OsFilter\OsFilter;
 use Mmoreram\Extractor\Extractor;
 use Mmoreram\Extractor\Filesystem\SpecificDirectory;
 use Mmoreram\Extractor\Resolver\ExtensionResolver;
@@ -27,7 +27,7 @@ class BinWrapper
 
     public function __construct($options = [])
     {
-        $this->options = array_merge($this->options, $options);
+        $this->options = array_merge_recursive($this->options, $options);
     }
 
     public function src($src = null, $os = null, $arch = null)
@@ -87,10 +87,54 @@ class BinWrapper
         ]));
     }
 
+    public function run($cmd = null)
+    {
+        if (!$cmd) {
+            $cmd = ['--version'];
+        }
+
+        $isFind = $this->findExisting();
+
+        if (!$isFind) {
+            throw new \Exception('Binary not found and not possible to download');
+        }
+
+        if ($this->options['skipCheck']) {
+            return true;
+        }
+
+        return $this->runCheck($cmd);
+    }
+
+    public function runCheck($cmd)
+    {
+        $isBinChecked = $this->binCheck($this->path(), $cmd);
+
+        if (!$isBinChecked) {
+            throw new \Exception('The `' . $this->path() . '` binary doesn\'t seem to work correctly');
+        }
+
+        if ($this->version()) {
+            BinVersionCheck::check($this->path(), $this->version());
+        }
+
+        return true;
+    }
+
+    public function findExisting()
+    {
+        $fileExist = file_exists($this->path());
+
+        if (!$fileExist) {
+            $this->download();
+        }
+
+        return true;
+    }
+
     public function download()
     {
-        $osFilter = new \OsFilter\OsFilter();
-        $files = $osFilter->find($this->src());
+        $files = OsFilter::find($this->src());
 
         if (count($files) === 0) {
             throw new \Exception('No binary found matching your system. It\'s probably not supported.');
@@ -145,36 +189,23 @@ class BinWrapper
         );
     }
 
-    public function findExisting()
+    // Todo move to separatly repository
+    private function binCheck($bin, $args = ['--help'])
     {
-        $fileExist = file_exists($this->path());
+        $isExecutable = is_executable($bin);
 
-        if (!$fileExist) {
-            $this->download();
-        }
-    }
-
-    public function runCheck($cmd)
-    {
-        BinCheck::check($this->path(), $cmd);
-
-        if ($this->version()) {
-            BinVersionCheck::check($this->path(), $this->version());
-        }
-    }
-
-    public function run($cmd = null)
-    {
-        if (!$cmd) {
-            $cmd = ['--version'];
+        if (!$isExecutable) {
+            throw new \Exception(
+                'Couldn\'t execute the ' . $bin . ' binary. Make sure it has the right permissions.'
+            );
         }
 
-        $this->findExisting();
+        exec($bin . ' ' . implode(' ', $args), $output, $returnVar);
 
-        if ($this->options['skipCheck']) {
-            return true;
+        if ($returnVar !== 0) {
+            return false;
         }
 
-        $this->runCheck($cmd);
+        return true;
     }
 }

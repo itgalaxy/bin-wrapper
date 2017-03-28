@@ -1,7 +1,7 @@
 <?php
-namespace BinWrapper\Tests;
+namespace Itgalaxy\BinWrapper\Tests;
 
-use BinWrapper\BinWrapper;
+use Itgalaxy\BinWrapper\BinWrapper;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
