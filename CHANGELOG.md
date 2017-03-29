@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+# 1.0.4 - 2017-03-29
+
+- Chore: minimum required `itgalaxy/os-filter` version is now `^3.0.0`.
+
 # 1.0.3 - 2017-03-28
 
 - Fixed: avoid creating file when `guzzle` could not download file.

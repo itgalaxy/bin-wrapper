@@ -15,8 +15,8 @@
         "guzzlehttp/guzzle" : "^6.2.0",
         "mmoreram/extractor": "^1.2.0",
         "composer/semver": "^1.4.0",
-        "symfony/filesystem": "^2.0 | ^3.0",
-        "itgalaxy/os-filter": "^2.0.0",
+        "symfony/filesystem": "^2.7 | ^3.2",
+        "itgalaxy/os-filter": "^3.0.0",
         "itgalaxy/bin-version-check": "^2.0.0",
         "webmozart/path-util": "^2.3.0"
     },
